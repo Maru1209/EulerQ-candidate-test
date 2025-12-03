@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="top">
+    <div>
+      <h2>Final Submit</h2>
+      <div class="muted">Candidate: {{ candidate_name }}</div>
+    </div>
+    <a class="btn secondary" href="/test">Back</a>
+  </div>
+
+  {% if finalized %}
+    <p><b>Status:</b> Finalized ✅</p>
+    <p class="muted">No further submissions are allowed.</p>
+  {% else %}
+    <p><b>Status:</b> Not finalized</p>
+  {% endif %}
+
+  <hr/>
+
+  <ul>
+    <li>Part A: {% if status["A"] %}✅ Submitted{% else %}❌ Not submitted{% endif %}</li>
+    <li>Part B: {% if status["B"] %}✅ Submitted{% else %}❌ Not submitted{% endif %}</li>
+    <li>Part C: {% if status["C"] %}✅ Submitted{% else %}❌ Not submitted{% endif %}</li>
+    <li>Part D: {% if status["D"] %}✅ Submitted{% else %}❌ Not submitted{% endif %}</li>
+  </ul>
+
+  <form method="post" action="/finalize">
+    <button class="btn" type="submit" {% if not all_done or finalized %}disabled{% endif %}>
+      Finalize & Submit All
+    </button>
+  </form>
+
+  {% if not all_done and not finalized %}
+    <p class="muted">Submit all Parts A–D before finalizing.</p>
+  {% endif %}
+{% endblock %}
