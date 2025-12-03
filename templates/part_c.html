@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="top">
+    <div>
+      <h2>Part C — Backend/API (/evaluate)</h2>
+      <div class="muted">Time: ~30–35 mins | Build endpoint + validation + metrics.</div>
+    </div>
+    <a class="btn secondary" href="/test">Back</a>
+  </div>
+
+  <pre>
+POST /evaluate
+Body: {orders:[...], riders:[...], assignments:[{order_id,rider_id}]}
+
+Return:
+- total_assigned
+- unassigned_orders (list)
+- late_deliveries (count)
+- capacity_violations (count)
+- total_travel_time
+- errors (strings)
+
+Detect:
+- missing IDs
+- same order assigned twice
+- same rider assigned to multiple orders (treat as error)
+  </pre>
+
+  <form method="post" action="/submit/c">
+    <div class="muted" id="saveStatus"></div>
+    <textarea id="answerBox" name="content" placeholder="Paste your FastAPI/Express code here..."></textarea>
+    <br/><br/>
+    <button class="btn" type="submit">Submit Part C</button>
+  </form>
+
+  <script>setupAutosave("eulerq_test_part_c");</script>
+{% endblock %}

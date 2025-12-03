@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="top">
+    <div>
+      <h2>Part B — Rider–Order Feasibility</h2>
+      <div class="muted">Time: ~30 mins | Output feasible pairs. Add tests.</div>
+    </div>
+    <a class="btn secondary" href="/test">Back</a>
+  </div>
+
+  <pre>
+Rules:
+- capacity >= load
+- can wait until ready_at
+- must deliver by due_by
+Assume distance metric (Manhattan/Euclidean) + time = distance/speed.
+Return: {"feasible_pairs":[{"order_id":"O1","rider_id":"R1"}, ...]}
+Include complexity + 2 tests (one edge case).
+  </pre>
+
+  <form method="post" action="/submit/b">
+    <div class="muted" id="saveStatus"></div>
+    <textarea id="answerBox" name="content" placeholder="Write your solution + tests here..."></textarea>
+    <br/><br/>
+    <button class="btn" type="submit">Submit Part B</button>
+  </form>
+
+  <script>setupAutosave("eulerq_test_part_b");</script>
+{% endblock %}
