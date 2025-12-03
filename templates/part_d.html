@@ -19,10 +19,16 @@ UI requirements:
 
   <form method="post" action="/submit/d">
     <div class="muted" id="saveStatus"></div>
-    <textarea id="answerBox" name="content" placeholder="Paste your React/HTML code here..."></textarea>
+    <div class="muted">
+  {% if existing_time %}Last submitted: {{ existing_time }}{% endif %}
+  {% if finalized %}<b> (Finalized - read only)</b>{% endif %}
+</div>
+
+<textarea id="answerBox" name="content" placeholder="..."{% if finalized %} readonly{% endif %}>{{ existing_content | e }}</textarea>
+
     <br/><br/>
     <button class="btn" type="submit">Submit Part D</button>
   </form>
 
-  <script>setupAutosave("eulerq_test_part_d");</script>
+  <script>setupAutosave("eulerq_test_part_a_{{ candidate_name | e }}");</script>
 {% endblock %}
