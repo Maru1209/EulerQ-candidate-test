@@ -233,7 +233,14 @@ def submit_part(part_id: str, request: Request, content: str = Form("")):
     save_submission(candidate, part_letter, content or "")
 
     # After submit, redirect back to the same part page (it will prefill saved content)
-    return RedirectResponse(url=f"/part/{part_id}", status_code=303)
+    # Redirect to next part after submit
+next_map = {"a": "b", "b": "c", "c": "d", "d": "finalize"}
+next_step = next_map.get(part_id, "finalize")
+
+if next_step == "finalize":
+    return RedirectResponse(url="/finalize", status_code=303)
+
+return RedirectResponse(url=f"/part/{next_step}", status_code=303)
 
 
 # -----------------------------
