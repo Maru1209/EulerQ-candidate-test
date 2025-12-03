@@ -88,3 +88,29 @@ def submit_part(part_id: str, request: Request, content: str = Form(...)):
         "submitted.html",
         {"request": request, "candidate_name": cand, "part": part_id.upper()}
     )
+ADMIN_KEY = "EULERQ123"  # change this
+
+@app.get("/admin/submissions", response_class=HTMLResponse)
+def admin_submissions(request: Request, key: str):
+    if key != ADMIN_KEY:
+        return HTMLResponse("Unauthorized", status_code=401)
+
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT candidate_name, part, created_at, content
+        FROM submissions
+        ORDER BY created_at DESC
+        LIMIT 200
+    """)
+    rows = cur.fetchall()
+    conn.close()
+
+    html = ["<h2>Submissions</h2>"]
+    html.append("<p>Latest 200</p>")
+    for cand, part, created_at, content in rows:
+        html.append("<hr/>")
+        html.append(f"<b>{cand}</b> — Part <b>{part}</b> — <small>{created_at}</small>")
+        html.append("<pre style='white-space:pre-wrap;background:#f3f4f6;padding:12px;border-radius:10px;'>"
+                    + (content or "") + "</pre>")
+    return HTMLResponse("".join(html))
