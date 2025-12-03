@@ -12,12 +12,11 @@ from fastapi.templating import Jinja2Templates
 # -----------------------------
 APP_TITLE = "EulerQ Candidate Test"
 DB = os.getenv("DB_PATH", "submissions.db")
-ADMIN_KEY = os.getenv("ADMIN_KEY", "EULERQ123")  # change in Railway Variables for security
+ADMIN_KEY = os.getenv("ADMIN_KEY", "EULERQ123")  # set in Railway Variables for security
 COOKIE_NAME = "candidate_name"
 
 templates = Jinja2Templates(directory="templates")
 app = FastAPI(title=APP_TITLE)
-
 
 # -----------------------------
 # DB helpers
@@ -128,7 +127,6 @@ def _startup():
 # -----------------------------
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    # send to /test always
     return RedirectResponse(url="/test", status_code=303)
 
 
@@ -136,15 +134,12 @@ def root(request: Request):
 def test_home(request: Request):
     candidate = get_candidate(request)
     if not candidate:
-        # Use index.html as “enter candidate” page OR create a candidate.html
-        # This expects your templates/index.html to show an input if candidate_name is empty
         return templates.TemplateResponse(
             "index.html",
             {
                 "request": request,
                 "candidate_name": "",
                 "finalized": False,
-                "show_candidate_form": True,
             },
         )
 
@@ -154,7 +149,6 @@ def test_home(request: Request):
             "request": request,
             "candidate_name": candidate,
             "finalized": is_finalized(candidate),
-            "show_candidate_form": False,
         },
     )
 
@@ -232,15 +226,14 @@ def submit_part(part_id: str, request: Request, content: str = Form("")):
     part_letter, _template = PART_MAP[part_id]
     save_submission(candidate, part_letter, content or "")
 
-    # After submit, redirect back to the same part page (it will prefill saved content)
     # Redirect to next part after submit
-next_map = {"a": "b", "b": "c", "c": "d", "d": "finalize"}
-next_step = next_map.get(part_id, "finalize")
+    next_map = {"a": "b", "b": "c", "c": "d", "d": "finalize"}
+    next_step = next_map.get(part_id, "finalize")
 
-if next_step == "finalize":
-    return RedirectResponse(url="/finalize", status_code=303)
+    if next_step == "finalize":
+        return RedirectResponse(url="/finalize", status_code=303)
 
-return RedirectResponse(url=f"/part/{next_step}", status_code=303)
+    return RedirectResponse(url=f"/part/{next_step}", status_code=303)
 
 
 # -----------------------------
