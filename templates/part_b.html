@@ -20,10 +20,16 @@ Include complexity + 2 tests (one edge case).
 
   <form method="post" action="/submit/b">
     <div class="muted" id="saveStatus"></div>
-    <textarea id="answerBox" name="content" placeholder="Write your solution + tests here..."></textarea>
+    <div class="muted">
+  {% if existing_time %}Last submitted: {{ existing_time }}{% endif %}
+  {% if finalized %}<b> (Finalized - read only)</b>{% endif %}
+</div>
+
+<textarea id="answerBox" name="content" placeholder="..."{% if finalized %} readonly{% endif %}>{{ existing_content | e }}</textarea>
+
     <br/><br/>
     <button class="btn" type="submit">Submit Part B</button>
   </form>
 
-  <script>setupAutosave("eulerq_test_part_b");</script>
+  <script> setupAutosave("eulerq_test_part_a_{{ candidate_name | e }}");</script>
 {% endblock %}
