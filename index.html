@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="top">
+    <div>
+      <h1>EulerQ Candidate Test</h1>
+      <div class="muted">Click a section → answer on that page → submit.</div>
+    </div>
+    {% if candidate_name %}
+      <div><b>Candidate:</b> {{ candidate_name }}</div>
+    {% endif %}
+  </div>
+
+  {% if not started %}
+    <form method="post" action="/start">
+      <label class="muted">Enter candidate name to start:</label><br/>
+      <input name="candidate_name" required />
+      <br/>
+      <button class="btn" type="submit">Start Test</button>
+    </form>
+  {% else %}
+    <div class="row" style="margin-top:12px">
+      <a class="btn" href="/part/a">Part A — Basic Computing</a>
+      <a class="btn" href="/part/b">Part B — Feasibility</a>
+      <a class="btn" href="/part/c">Part C — API /evaluate</a>
+      <a class="btn" href="/part/d">Part D — Frontend</a>
+      <a class="btn secondary" href="/">Change Candidate</a>
+    </div>
+
+    <hr/>
+    <div class="muted">
+      Tip: answers are autosaved in the browser. Submit stores on server (SQLite).
+    </div>
+  {% endif %}
+{% endblock %}
