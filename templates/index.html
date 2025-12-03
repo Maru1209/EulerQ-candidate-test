@@ -10,8 +10,9 @@
     {% endif %}
   </div>
 
-  {% if not started %}
-    <form method="post" action="/start">
+  {# Show candidate form only if candidate not set #}
+  {% if not candidate_name %}
+    <form method="post" action="/set-candidate">
       <label class="muted">Enter candidate name to start:</label><br/>
       <input name="candidate_name" required />
       <br/>
@@ -24,12 +25,16 @@
       <a class="btn" href="/part/c">Part C — API /evaluate</a>
       <a class="btn" href="/part/d">Part D — Frontend</a>
       <a class="btn" href="/finalize">Final Submit All</a>
-      <a class="btn secondary" href="/">Change Candidate</a>
+      <a class="btn secondary" href="/change-candidate">Change Candidate</a>
     </div>
 
     <hr/>
     <div class="muted">
-      Tip: answers are autosaved in the browser. Submit stores on server (SQLite).
+      {% if finalized %}
+        <b>Test is finalized.</b> Submissions are locked.
+      {% else %}
+        Tip: answers are autosaved in the browser. Submit stores on server (SQLite).
+      {% endif %}
     </div>
   {% endif %}
 {% endblock %}
