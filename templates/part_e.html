@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="top">
+    <div>
+        <h2>Part E — Rider Assignment Challenge (Advanced)</h2>
+        <div class="muted">Based on the requirement provided by Tharrma. Answer in detail below.</div>
+    </div>
+    <a class="btn secondary" href="/test">Back</a>
+</div>
+
+<pre>
+Goal:
+Build a backend-heavy mini application that:
+• Accepts batches of 10 orders
+• Generates 15 riders per batch with unique IDs + random/fixed coordinates
+• Assigns riders to orders using a greedy “closest rider wins” algorithm
+• Stores orders in SQL
+• Stores assignments in SQL (order_id, rider_id)
+• Provides API to create a batch + list all orders
+• Frontend displays all orders with assigned riders
+
+Backend Requirements:
+• POST /batch → Accept 10 orders, store, generate 15 riders, assign using greedy algorithm
+• GET /orders → List all stored orders + assigned rider
+• Greedy algorithm → pick nearest available rider for each order
+• Distance metric can be Euclidean or Haversine
+
+Frontend Requirements:
+• Table showing: order_id, pickup lat/lng, drop lat/lng, assigned rider
+• Uses GET /orders to fetch data
+
+Candidate Deliverable:
+• GitHub repo with backend, frontend, DB schema, README explaining logic
+</pre>
+
+<div class="muted">
+    {% if existing_time %}Last submitted: {{ existing_time }}{% endif %}
+    {% if finalized %}<b>(Finalized - read only)</b>{% endif %}
+</div>
+
+<form method="post" action="/submit/e">
+    <textarea id="answerBox" name="content" placeholder="Write your architectural, algorithmic, and API design answer here..."
+    {% if finalized %}readonly{% endif %}>{{ existing_content | e }}</textarea>
+
+    <br/><br/>
+    <button class="btn" type="submit" {% if finalized %}disabled{% endif %}>
+        Submit Part E
+    </button>
+</form>
+
+<script>
+    setupAutosave("eulerq_test_part_e_{{ candidate_name | e }}");
+</script>
+
+{% endblock %}
