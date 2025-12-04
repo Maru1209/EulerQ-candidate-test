@@ -172,13 +172,14 @@ def change_candidate():
 
 
 # -----------------------------
-# Parts (A/B/C/D)
+# Parts (A/B/C/D/E)
 # -----------------------------
 PART_MAP = {
     "a": ("A", "part_a.html"),
     "b": ("B", "part_b.html"),
     "c": ("C", "part_c.html"),
     "d": ("D", "part_d.html"),
+    "e": ("E", "part_e.html"),
 }
 
 
@@ -227,13 +228,20 @@ def submit_part(part_id: str, request: Request, content: str = Form("")):
     save_submission(candidate, part_letter, content or "")
 
     # Redirect to next part after submit
-    next_map = {"a": "b", "b": "c", "c": "d", "d": "finalize"}
+    next_map = {
+        "a": "b",
+        "b": "c",
+        "c": "d",
+        "d": "e",
+        "e": "finalize"
+    }
     next_step = next_map.get(part_id, "finalize")
 
     if next_step == "finalize":
         return RedirectResponse(url="/finalize", status_code=303)
 
     return RedirectResponse(url=f"/part/{next_step}", status_code=303)
+
 
 
 # -----------------------------
